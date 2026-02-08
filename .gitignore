@@ -1,0 +1,9 @@
+.env
+.env.local
+
+docker-compose.override.yml
+.docker/
+
+*.log
+
+.vscode/
