@@ -9,7 +9,6 @@ RUN composer install \
     --prefer-dist \
     --optimize-autoloader
 
-
 FROM dunglas/frankenphp:latest
 
 WORKDIR /app

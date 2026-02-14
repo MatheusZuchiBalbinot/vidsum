@@ -1,15 +1,23 @@
 #!/usr/bin/env sh
 set -e
 
+echo "Clearing Laravel caches..."
+php artisan optimize:clear || true
+rm -rf bootstrap/cache/*.php || true
+
 echo "Waiting for database..."
 
-until pg_isready -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USERNAME"
+until pg_isready \
+  -h "$DB_HOST" \
+  -p "$DB_PORT" \
+  -U "$DB_USERNAME" \
+  -d "$DB_DATABASE" \
+  -t 1
 do
   sleep 1
 done
 
-echo "Generating app key if missing..."
-php artisan key:generate --force || true
+echo "Database ready ✔"
 
 echo "Running migrations..."
 php artisan migrate --force
