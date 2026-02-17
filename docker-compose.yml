@@ -1,14 +1,6 @@
 name: video-summarizer
 
-networks:
-  app_net:
-    driver: bridge
-
-volumes:
-  pgdata:
-
 services:
-
   postgres:
     image: postgres:16
     restart: unless-stopped
@@ -51,3 +43,22 @@ services:
       - app_net
     stdin_open: true
     tty: true
+
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend
+    networks:
+      - app_net
+
+networks:
+  app_net:
+    driver: bridge
+
+volumes:
+  pgdata:
